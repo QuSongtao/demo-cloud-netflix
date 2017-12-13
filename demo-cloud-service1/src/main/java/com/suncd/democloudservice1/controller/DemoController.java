@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class DemoController {
+    /**
+     * 简单接口-供外部feign和zuul调用或定向
+     * @return String
+     */
     @RequestMapping(value = "/get",method = RequestMethod.GET)
     public String getString(){
         return "cgx";
