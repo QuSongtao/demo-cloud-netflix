@@ -1,0 +1,42 @@
+server:
+  port: 7999
+spring:
+  application:
+    name: zuul-service
+zuul:
+  routes:
+    cgx:
+      path: /test/**
+      serviceId: client-service
+      stripPrefix: false
+      retryable: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8088/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+      leaseRenewalIntervalInSeconds: 30
+      leaseExpirationDurationInSeconds: 60
+      prefer-ip-address: true
+      instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+# ribbon retry config
+ribbon:
+  OkToRetryOnAllOperations: true # make all operations retry
+  MaxAutoRetriesNextServer: 2    # the next balance server,not include the first time
+  MaxAutoRetries: 1              # times of retry in every service,not include the first time
+  ConnectTimeout: 400            # socket connect timeout (million seconds)
+  ReadTimeout: 3000              # read timeout (million seconds)
+
+# set hystrix timeout (million seconds)
+# this number need to bigger than [ribbon.ConnectTimeout] and [ribbon.ReadTimeout]
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000

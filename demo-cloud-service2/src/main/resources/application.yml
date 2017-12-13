@@ -1,0 +1,16 @@
+server:
+  port: 8068
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8088/eureka
+#    healthcheck:
+#      enabled: true
+  instance:
+      leaseRenewalIntervalInSeconds: 30
+      leaseExpirationDurationInSeconds: 60
+      prefer-ip-address: true
+      instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+spring:
+  application:
+    name: client-service
