@@ -3,7 +3,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8088/eureka
+      defaultZone: http://192.168.2.107:8088/eureka
   instance:
       leaseRenewalIntervalInSeconds: 30
       leaseExpirationDurationInSeconds: 60
@@ -12,6 +12,15 @@ eureka:
 spring:
   application:
     name: cloud-comsumer
+  redis:
+    cluster:
+      nodes: 192.168.2.17:50611,192.168.2.18:56020
+    password: foo123
+    pool:
+      max-active: 800
+      max-idle: 100
+      max-wait: 5000
+      min-idle: 30
 
 ######################################################################
 # spring cloud feign retry config
@@ -27,3 +36,12 @@ client-service:
     MaxAutoRetries: 1
     ConnectTimeout: 250
     ReadTimeout: 1000
+
+
+#/configurations/microserver/commonconfig/spring/redis/pool=max-active=800
+#/configurations/microserver/commonconfig/spring/redis/pool=max-idle=100
+#/configurations/microserver/commonconfig/spring/redis/pool=max-wait=5000
+#/configurations/microserver/commonconfig/spring/redis/pool=min-idle=30
+#/configurations/microserver/commonconfig/spring/redis=database=3
+#/configurations/microserver/commonconfig/spring/redis=host=192.168.2.200
+#/configurations/microserver/commonconfig/spring/redis=port=6379
