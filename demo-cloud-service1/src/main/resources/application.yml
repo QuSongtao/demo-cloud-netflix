@@ -13,6 +13,16 @@ eureka:
       leaseExpirationDurationInSeconds: 60
       prefer-ip-address: true
       instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
 spring:
   application:
     name: client-service
+  redis:
+    cluster:
+      nodes: 192.168.2.17:50611,192.168.2.18:56020
+    password: foo123
+    pool:
+      max-active: 800
+      max-idle: 100
+      max-wait: 5000
+      min-idle: 30
