@@ -4,13 +4,9 @@
  */
 package com.example.democloudcomsumer.service.mq;
 
-import com.suncd.pms.xaschedule.tcc.XaScheduleService;
+import com.suncd.pms.xaschedule.annotation.XaListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
 
 /**
  * 功能：XXXX
@@ -21,20 +17,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MqListener {
 
-    @Autowired
-    @Qualifier(value = "pmsConnectionFactory")
-    private ConnectionFactory connectionFactory;
-
-    @Autowired
-    private XaScheduleService xaScheduleService;
-
-
     /**
      * 侦听队列定义为xa.[应用名称].q,监听事务调度的消息
      * 进行回滚处理
      */
     @RabbitListener(queues = "xa.${spring.application.name}.q",containerFactory = "pmsContainerFactory")
+    @XaListener(xaConnectionFactory = "pmsConnectionFactory")
     public void consumeMsg(byte[] msgBody){
-        xaScheduleService.dealRollback(connectionFactory,msgBody);
+
     }
 }

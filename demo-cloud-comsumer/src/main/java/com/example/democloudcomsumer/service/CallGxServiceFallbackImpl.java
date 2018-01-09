@@ -4,6 +4,7 @@
  */
 package com.example.democloudcomsumer.service;
 
+import com.suncd.pms.xaschedule.annotation.XaUser;
 import com.suncd.pms.xaschedule.tcc.XaParticipant;
 import com.suncd.pms.xaschedule.tcc.XaScheduleService;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -33,22 +34,30 @@ public class CallGxServiceFallbackImpl implements CallGxService {
     @Autowired
     private FeignTest feignTest;
 
+
     @Override
     public String getString() {
-        //1. 数据库操作
+        //1. 业务操作
         // ...
 
-
-        //2. 记录参数
-        Map<String,Object> map = new HashMap<>();
-        map.put("arg1","test111");
-
-        //3.交由分布式事务管理
+        //2. 事务批号
         String transNo = "PMS00"+ UUID.randomUUID().toString().substring(0,5) +"20180104171801";
-        XaParticipant xp = new XaParticipant(transNo,"cgx1",2,map,true);
+
+        //3. 中间参数
+        Map<String,Object> map = new HashMap<>();
+        map.put("arg1","testcgx11111:"+transNo);
+        XaParticipant xp = new XaParticipant(transNo,"cgx1",2,10,map,true);
+
+        //4. 加入分布式事务管理
         xaScheduleService.pushToXAPool(connectionFactory.createConnection(),xp,XaRollbackHandler.class);
-        //调用第二个事务,传入事务编号
+
+        //5. 调用其它业务,传入事务编号
         feignTest.get(transNo);
         return "ohyes";
+    }
+
+    @XaUser(xaValues = {"asdasd"})
+    public String test(byte[] s){
+        return new String(s);
     }
 }

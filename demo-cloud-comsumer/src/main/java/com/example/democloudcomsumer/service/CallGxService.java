@@ -18,4 +18,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface CallGxService {
 //    @RequestMapping(value = "/test/get",method = RequestMethod.GET)
     String getString();
+    String test(byte[] bytes);
 }

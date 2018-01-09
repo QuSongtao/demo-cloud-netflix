@@ -21,6 +21,6 @@ public class XaRollbackHandler implements XaRollbackHandle {
     @Override
     public boolean rollback(Map<String, Object> map) {
         System.out.println("cgx1进入回滚!"+new Gson().toJson(map));
-        return false;
+        return true;
     }
 }
